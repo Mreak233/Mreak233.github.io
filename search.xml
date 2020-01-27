@@ -3,10 +3,23 @@
   <entry>
     <title>blog搭建小记</title>
     <url>/2020/01/28/blog%E6%90%AD%E5%BB%BA%E5%B0%8F%E8%AE%B0/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<p>​        很早很早很早就有搭自己的blog的想法，也是为了满足自己的倾诉欲，也是做一点知识输出（这方面忽视即可，<del>我基本没有知识</del></p>
+<p>​        嗷，最开始是在<a href="https://www.luogu.org/blog/Venus/build-hexo-github-blog" target="_blank" rel="noopener">luogu日报</a>（<del>这篇的确很小白，但是有点呆</del>）上看见的，最吸引我的就是可以白嫖（雾</p>
+<p>其实配域名啥的还是要花一点钱的，雾，也有<a href="https://certbot.eff.org/" target="_blank" rel="noopener">推荐</a>（这个听说很省事</p>
+<p>​        后面看了蛮多相关博客的，也就明白了操作顺序其实并没有这么死板嗷</p>
+<p>​        推荐观看：<a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">官方文档</a>、<a href="https://eirunye.github.io/categories/Hexo/" target="_blank" rel="noopener">推荐1</a>、<a href="https://www.jianshu.com/p/4026acde395f" target="_blank" rel="noopener">还是推荐1嗷(简书版)</a></p>
+<p>​        反正我觉得现在这样够我玩儿了。</p>
+<p>​        雾，好难啊，我完全写不出有意义的东西，滚去敲代码辽。</p>
+]]></content>
+      <categories>
+        <category>博客搭建</category>
+      </categories>
+      <tags>
+        <tag>乱七八糟</tag>
+      </tags>
   </entry>
   <entry>
-    <title>Git学习小记</title>
+    <title>Git学习小记-1</title>
     <url>/2020/01/26/Git%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<p>​    其实好早就对Git感兴趣了，但是一直没有找到时间去学（其实是懒，QAQ</p>
 <p>​    然后最近不是新冠闹得沸沸扬扬嘛，刚好春节期间也不用走亲戚串门啥的，总算是可以好好坐下来学点东西了。嗷。挺好的。（不立Flag才不会学习</p>
@@ -15,6 +28,9 @@
 <p>​    放一下：<a href="https://git-scm.com/book/zh/v2/" target="_blank" rel="noopener">Git教程1</a>、<a href="http://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="noopener">Git教程2</a>、<a href="https://learngitbranching.js.org/" target="_blank" rel="noopener">Git教程3</a></p>
 <p>​    还在学习ing~</p>
 ]]></content>
+      <categories>
+        <category>是学习嗷</category>
+      </categories>
       <tags>
         <tag>Git</tag>
       </tags>
@@ -35,6 +51,12 @@
 <p>​        </p>
 <p><img src="D:%5CQQ%5C%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95%5C2189413790%5CFileRecv%5CMobileFile%5C81486304a5a3c342ba8b5d9d272be612.png" alt="81486304a5a3c342ba8b5d9d272be612"></p>
 ]]></content>
+      <categories>
+        <category>是生活嗷</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
   </entry>
   <entry>
     <title>天气之子</title>
