@@ -1,9 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Test</title>
+    <url>/2020/02/08/test/</url>
+    <content><![CDATA[<p>​        害，一直以来Tab键好像就出了点问题，稍微试试嗷。也顺便试试一些乱七八糟的东西，qaq</p>
+<a id="more"></a>
+
+<hr>
+<h4 id="Tab"><a href="#Tab" class="headerlink" title="Tab :"></a>Tab :</h4><p>​    我是一个Tab</p>
+<p>​        我是两个Tab</p>
+<hr>
+<h4 id="居中引用："><a href="#居中引用：" class="headerlink" title="居中引用："></a>居中引用：</h4><blockquote class="blockquote-center"><p>人生不相见，动如参与商。</p>
+</blockquote>
+
+<hr>
+<h4 id="超大图片"><a href="#超大图片" class="headerlink" title="超大图片"></a>超大图片</h4><p>​    emmm,没想好放啥图片，那就放个头像好了。</p>
+<p><img src="/.com//E:%5C%E6%96%87%E6%A1%A3%5C%E7%9B%B8%E5%86%8C%5C%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20200106234641.jpg" alt="微信图片_20200106234641"></p>
+<hr>
+<h4 id="Bootstrap-Callout："><a href="#Bootstrap-Callout：" class="headerlink" title="Bootstrap Callout："></a>Bootstrap Callout：</h4><div class="note default">
+            <p>Content_default (md partial supported) </p>
+          </div>
+
+<div class="note primary">
+            <p>Content_primary (md partial supported) </p>
+          </div>
+
+<div class="note success">
+            <p>Content_success (md partial supported) </p>
+          </div>
+
+<div class="note info">
+            <p>Content_info (md partial supported) </p>
+          </div>
+
+<div class="note warning">
+            <p>Content_warning (md partial supported) </p>
+          </div>
+
+<div class="note danger">
+            <p>Content_danger (md partial supported) </p>
+          </div>
+
+]]></content>
+      <tags>
+        <tag>乱七八糟</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>日记</title>
+    <url>/2020/02/08/%E6%97%A5%E8%AE%B0/</url>
+    <content><![CDATA[<h3 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h3><hr>
+<p>为啥突然想起来写日记捏~</p>
+<p>嗯。。</p>
+<p>一是一向以来文字能力就不是很好。也想稍微锻炼一下自己。（或许记的会是流水账？？</p>
+<p>二是从放假以来就过的迷迷糊糊的，也是稍微写点东西记录生活，也是稍微激励一下自己不要一直颓废。略略略</p>
+<p>就酱吧。</p>
+<a id="more"></a>]]></content>
+      <categories>
+        <category>是生活嗷</category>
+      </categories>
+      <tags>
+        <tag>是日记嗷</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2019年终总结</title>
+    <url>/2020/02/08/2019%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h3 id="2019年终总结"><a href="#2019年终总结" class="headerlink" title="2019年终总结"></a>2019年终总结</h3><p>一年时光又从我的指尖悄然流过，不得不说，恍如隔世，前半年是水生火热，后半年是柳暗花明。</p>
+<p>这么说 也许有些过分，但是，对我而言，大学生活所具有的自由现在就是我的氧气。</p>
+<a id="more"></a>
+
+<p>这一年没有想像中的那么完满，之前觉得天都会塌下来的事情现在看来也不过那样，不过是换个地方继续生活。</p>
+<p>很抱歉啊，没有活成你想要的样子。但是啊，我真的有一直在好好努力。</p>
+<p>2019年的自己，say goodbye。s</p>
+<p>2020年的我，会是更好的自己。</p>
+<p>这一年，虽说不够完满，但是已经足够令我满意。</p>
+<p>最后，感谢一切关心过我帮助过我的人们，我不习惯点名，但是，我有念着你们的好。嗯，还有，感谢武汉</p>
+<p>大学送的录取通知书，让我，与她，与你们，与更好的自己相遇~</p>
+<p>我不知道该说些什么，我只是，这一刻，很想很想你。</p>
+<p><img src="/.com//1.jpg" alt="害"></p>
+]]></content>
+      <categories>
+        <category>是生活嗷</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>武松</title>
+    <url>/2020/01/29/%E6%AD%A6%E6%9D%BE/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>blog搭建小记</title>
     <url>/2020/01/28/blog%E6%90%AD%E5%BB%BA%E5%B0%8F%E8%AE%B0/</url>
     <content><![CDATA[<p>很早很早很早就有搭自己的blog的想法，也是为了满足自己的倾诉欲，也是做一点知识输出（这方面忽视即可，<del>我基本没有知识</del></p>
+<a id="more"></a>
+
 <p>嗷，最开始是在<a href="https://www.luogu.org/blog/Venus/build-hexo-github-blog" target="_blank" rel="noopener">luogu日报</a>（<del>这篇的确很小白，但是有点呆</del>）上看见的，最吸引我的就是可以白嫖（雾</p>
 <p>其实配域名啥的还是要花一点钱的，雾，也有<a href="https://certbot.eff.org/" target="_blank" rel="noopener">推荐</a>（这个听说很省事</p>
 <p>后面看了蛮多相关博客的，也就明白了操作顺序其实并没有这么死板嗷</p>
@@ -28,11 +122,19 @@
     <title>Git学习小记-1</title>
     <url>/2020/01/26/Git%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<p>其实好早就对Git感兴趣了，但是一直没有找到时间去学（其实是懒，QAQ</p>
-<p>然后最近不是新冠闹得沸沸扬扬嘛，刚好春节期间也不用走亲戚串门啥的，总算是可以好好坐下来学点东西了。嗷。挺好的。（不立Flag才不会学习</p>
+<p>然后最近不是新冠闹得沸沸扬扬嘛，刚好春节期间也不用走亲戚串门啥的，总算是可以好好坐下来学点东西了。</p>
+<a id="more"></a>
+
+<p>嗷。挺好的。（不立Flag才不会学习</p>
 <p>问<strong>狼</strong>要了一点学习资料（她主动帮我找的哈，真棒诶。</p>
 <p>我自己本来在看的也就只有<a href="https://www.liaoxuefeng.com/wiki/896043488029600" target="_blank" rel="noopener">廖雪峰</a>，现在多了别的可以参照了（虽然廖雪峰写的很好了</p>
 <p>放一下：<a href="https://git-scm.com/book/zh/v2/" target="_blank" rel="noopener">Git教程1</a>、<a href="http://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="noopener">Git教程2</a>、<a href="https://learngitbranching.js.org/" target="_blank" rel="noopener">Git教程3</a></p>
 <p>还在学习ing~</p>
+<p>2 - 8</p>
+<p>咕咕咕姑姑，鸽了好久的Git 终于又被我想起来了，今天就来个end吧（我指入门的end</p>
+<p>好容易假期早起了，也得做点有意思的事情，哈哈哈</p>
+<p>就把我们回访的事情挂到Github上面去⑧，正好这两天也在忙这个，差不多结束了</p>
+<p>waiting~ working~</p>
 ]]></content>
       <categories>
         <category>是学习嗷</category>
@@ -42,33 +144,10 @@
       </tags>
   </entry>
   <entry>
-    <title>2019年终总结</title>
-    <url>/2020/01/01/2019%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<h3 id="2019年终总结"><a href="#2019年终总结" class="headerlink" title="2019年终总结"></a>2019年终总结</h3><p>一年时光又从我的指尖悄然流过，不得不说，恍如隔世，前半年是水生火热，后半年是柳暗花明。</p>
-<p>这么说 也许有些过分，但是，对我而言，大学生活所具有的自由现在就是我的氧气。</p>
-<p>这一年没有想像中的那么完满，之前觉得天都会塌下来的事情现在看来也不过那样，不过是换个地方继续生活。</p>
-<p>很抱歉啊，没有活成你想要的样子。但是啊，我真的有一直在好好努力。</p>
-<p>2019年的自己，say goodbye。</p>
-<p>2020年的我，会是更好的自己。</p>
-<p>这一年，虽说不够完满，但是已经足够令我满意。</p>
-<p>最后，感谢一切关心过我帮助过我的人们，我不习惯点名，但是，我有念着你们的好。嗯，还有，感谢武汉</p>
-<p>大学送的录取通知书，让我，与她，与你们，与更好的自己相遇~</p>
-<p>我不知道该说些什么，我只是，这一刻，很想很想你。</p>
-<p>​        </p>
-<p><img src="D:%5CQQ%5C%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95%5C2189413790%5CFileRecv%5CMobileFile%5C81486304a5a3c342ba8b5d9d272be612.png" alt="81486304a5a3c342ba8b5d9d272be612"></p>
-]]></content>
-      <categories>
-        <category>是生活嗷</category>
-      </categories>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>天气之子</title>
     <url>/2019/11/01/%E5%A4%A9%E6%B0%94%E4%B9%8B%E5%AD%90/</url>
     <content><![CDATA[<p>结束了。</p>
-]]></content>
+<a id="more"></a>]]></content>
   </entry>
   <entry>
     <title>Hello World</title>
