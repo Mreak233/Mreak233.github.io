@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/header.png?v=7.4.2">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/header.png?v=7.4.2">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/header.png?v=7.4.2">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.2" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.2">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="参考（白嫖）文献 原作者是英文的来着，我是高中时候写最短路的时候看见的qaq，当时自己改了一下，拿来当堆用，跑了luogu最短路板子的rank1qaq。说明这个还是很顶的。    1.单元素修改的线段树 我们这里考虑两种操作   修改数组中的一个元素 求某个区间的元素总和   这里我们先假设数组的元素个数为2的幂，这里以16为例，最下面一行（叶子节点）是我们的数组  修改操作的话就直接修改然后向上">
+<meta name="keywords" content="LJH线段树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LJH线段树">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;17&#x2F;LJH%E7%BA%BF%E6%AE%B5%E6%A0%91&#x2F;index.html">
+<meta property="og:site_name" content="Mreak &#39;s blog">
+<meta property="og:description" content="参考（白嫖）文献 原作者是英文的来着，我是高中时候写最短路的时候看见的qaq，当时自己改了一下，拿来当堆用，跑了luogu最短路板子的rank1qaq。说明这个还是很顶的。    1.单元素修改的线段树 我们这里考虑两种操作   修改数组中的一个元素 求某个区间的元素总和   这里我们先假设数组的元素个数为2的幂，这里以16为例，最下面一行（叶子节点）是我们的数组  修改操作的话就直接修改然后向上">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;17&#x2F;LJH%E7%BA%BF%E6%AE%B5%E6%A0%91&#x2F;1.png">
+<meta property="og:updated_time" content="2020-03-03T02:21:42.226Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;17&#x2F;LJH%E7%BA%BF%E6%AE%B5%E6%A0%91&#x2F;1.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/02/17/LJH%E7%BA%BF%E6%AE%B5%E6%A0%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>LJH线段树 | Mreak 's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mreak 's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-fw fa-calendar"></i>日程表</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/17/LJH%E7%BA%BF%E6%AE%B5%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Mreak">
+      <meta itemprop="description" content="算法虐我千百遍，我待算法如初恋。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mreak 's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          LJH线段树
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-16 21:27:09" itemprop="dateCreated datePublished" datetime="2020-02-16T21:27:09Z">2020-02-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-03 02:21:42" itemprop="dateModified" datetime="2020-03-03T02:21:42Z">2020-03-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%AF%E4%BB%A3%E7%A0%81%E5%97%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">是代码嗷</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a href="http://codeforces.com/blog/entry/18051" target="_blank" rel="noopener">参考（白嫖）文献</a></p>
+<p>原作者是英文的来着，我是高中时候写最短路的时候看见的qaq，当时自己改了一下，拿来当堆用，跑了<a href="https://www.luogu.com.cn/problem/P3371" target="_blank" rel="noopener">luogu最短路板子</a>的rank1qaq。说明这个还是很顶的。</p>
+<!--readmore-->
+
+<hr>
+<h3 id="1-单元素修改的线段树"><a href="#1-单元素修改的线段树" class="headerlink" title="1.单元素修改的线段树"></a>1.单元素修改的线段树</h3><ul>
+<li><p>我们这里考虑两种操作</p>
+<ul>
+<li><ol>
+<li>修改数组中的一个元素</li>
+<li>求某个区间的元素总和</li>
+</ol>
+</li>
+<li><p>这里我们先假设数组的元素个数为2的幂，这里以16为例，最下面一行（叶子节点）是我们的数组<br><img src="/2020/02/17/LJH%E7%BA%BF%E6%AE%B5%E6%A0%91/1.png" alt="n = 16 时的树"></p>
+<ul>
+<li><p>修改操作的话就直接修改然后向上维护就行<br>求和操作：<br>   举个栗子，我们需要求<strong>[3,11)</strong>的和，只需要对19、5、12、26节点求和即可</p>
+</li>
+<li><pre><code>#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+const int N = 1e6 + 5;
+
+int n, t[N &lt;&lt; 1];
+
+//build the tree
+void build() {
+   for(int i = n - 1;i &gt; 0; --i) t[i] = t[i&lt;&lt;1] + t[i&lt;&lt;1|1];
+}
+
+//set val at position p
+void modify(int p,int val) {
+   for(t[p += n] = val; p &gt; 1; p &gt;&gt;= 1) t[p&gt;&gt;1] = t[p] + t[p^1];
+}
+
+//sum on interval [l, r)
+int query(int l,int r) {
+   int res = 0;
+   for(l += n, r += n; l &lt; r;l &gt;&gt;= 1, r &gt;&gt;= 1) {
+       if(l&amp;1) res += t[l++];
+       if(r&amp;1) res += t[--r];
+   }
+   return res;
+}
+
+int main(){
+   scanf(&quot;%d&quot;,&amp;n);
+   for(int i = 0; i &lt; n; ++i) scanf(&quot;%d&quot;, t + n + i);
+   build();modify(0,1);
+   printf(&quot;%d\n&quot;,query(3,11));
+   return 0;
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line">   - 十分优美。</span><br><span class="line">  </span><br><span class="line">   - 接下来解释一下这样做为什么有效而且高效~</span><br><span class="line">  </span><br><span class="line">      - 从图片中您可以注意到，叶子存储在以*n*开头的连续节点中，索引为*i的*元素对应于索引为*i* +  *n*的节点。因此，我们可以将初始值直接读入它们所属的树中。</span><br><span class="line">     - 在执行任何查询之前，我们需要构建树，这很简单，并且需要*O*（*n*）时间。由于父级的索引始终小于子级，因此我们仅按降序处理所有内部节点。如果您对位操作感到困惑，则build（）的代码等效于`t[i] = t[2*i] + t[2*i+1]`。</span><br><span class="line">     - 修改元素也非常简单，并且花费的时间与树的高度成正比，即*O*（*log*（*n*））。我们只需要更新给定节点的父节点中的值即可。因此，我们知道了节点*p的*父节点为*p* / 2或`p&gt;&gt;1`，便向上走树，这意味着相同。`p^1`将2 *  *i*变成2 *  *i* + 1，反之亦然，因此它表示*p*的父级的第二个子级。</span><br><span class="line">     - 求和也可以在*O*（*log*（*n*））时间内进行。为了更好地理解它的逻辑，您可以遍历区间[ 3、11]的示例，并验证结果是否完全由节点19、26、12和5中的值组成（按此顺序）。</span><br><span class="line">  </span><br><span class="line">  - 总体思路如下。如果*l*（左间隔边界）是奇数（等于`l&amp;1`），则*l*是其父级的右子级。然后我们的间隔包括节点*l，*但不包括它的父节点。因此，我们通过设置*l* =（*l* + 1）/ 2来添加`t[l]`并移动到*l*的父母的右边。如果*l*是偶数，则它是左孩子，并且该间隔也包括它的父对象（除非右边界干扰了），所以我们通过设置*l* =  *l* / 2来移至它。类似的论点也适用于右边界。边界遇见后我们便停止。</span><br><span class="line">  </span><br><span class="line">    无需递归，也无需进行其他计算（例如找到间隔的中间部分），我们只需遍历所需的所有节点，因此非常高效。</span><br><span class="line"></span><br><span class="line">- 前面我们的讨论完全基于任意大小的数组，但是事实上这个代码适用于任意大小的数组，解释会复杂的多，但是我们先来看看它带给我们的好处</span><br><span class="line">  - 1. 线段树只使用了2 * n 内存，而不是像传统线段树一样使用4 * n；</span><br><span class="line">    2. 数组元素从 索引n 开始连续存储</span><br><span class="line">    3. 所有操作都十分高效而且容易编写</span><br><span class="line">  -  您可以跳过下一部分，仅测试代码以检查其是否正确。但是对于那些对某种解释感兴趣的人，这是*n* = 13的树的样子 </span><br><span class="line">   ![n = 13 时的树](LJH线段树/2.png)</span><br><span class="line">  -  它实际上不再是一棵树，而是一组完美的二叉树：具有根2和高度4，根7和高度2，根12和高度2，根13和高度1。用于**查询**操作，因此存储在其中的内容无关紧要。叶子似乎出现在不同的高度，但是可以通过在节点13之前切割树并将树的右部分向左移动来固定叶子。我相信，就我们执行的操作而言，所产生的结构对于较大的完美二叉树的一部分可以证明是同构的，这就是为什么我们获得正确结果的原因。 </span><br><span class="line">  -  在这里，我们不进行证明，让我们来看一下间隔为[0，7）的示例。我们有*l* = 13，  *r* = 20，`l&amp;1 =&gt; add t[13]`边界变为*l* = 7，  *r* = 10。同样`l&amp;1 =&gt; add t[7]`，边界变为*l* = 4，  *r* = 5，并且突然节点处于相同的高度。现在`r&amp;1 =&gt; add t[4 = --r]`，边界变为*l* = 2，  *r* = 2，到此结束。 </span><br><span class="line"></span><br><span class="line">### 2.区间修改，单元素访问</span><br><span class="line"></span><br><span class="line">- 这里我们考虑两种操作</span><br><span class="line"></span><br><span class="line">  - 1. 向某区间中的所有元素添加一个值</span><br><span class="line">    2. 求某个位置的元素值</span><br><span class="line"></span><br><span class="line">  - 在这种情况下，我们需要修改`Modify`和`query`函数</span><br></pre></td></tr></table></figure>
+void modify(int l, int r, int value) {
+ for (l += n, r += n; l &lt; r; l &gt;&gt;= 1, r &gt;&gt;= 1) {
+   if (l&amp;1) t[l++] += value;
+   if (r&amp;1) t[--r] += value;
+ }
+}
+
+int query(int p) {
+ int res = 0;
+ for (p += n; p &gt; 0; p &gt;&gt;= 1) res += t[p];
+ return res;
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-   很像是之前的`query`函数与`Modify`函数互换了qaq，这里等于打了tag</span><br><span class="line">   </span><br><span class="line">-  如果在修改后的某个时刻需要检查数组中的所有元素，则可以使用以下代码将所有修改推到叶子上。之后，我们可以遍历以索引*n*开头的元素。这样，我们将复杂度从*O*（*nlog*（*n*））降低到*O*（*n*），类似于使用*build*而不是进行n次修改。</span><br><span class="line"></span><br><span class="line">   ``` </span><br><span class="line">   void push() &#123;</span><br><span class="line">     for (int i = 1; i &lt; n; ++i) &#123;</span><br><span class="line">       t[i&lt;&lt;1] += t[i];</span><br><span class="line">       t[i&lt;&lt;1|1] += t[i];</span><br><span class="line">       t[i] = 0;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></code></pre></li>
+</ul>
+</li>
+<li><p>但是请注意，以上代码仅在单个元素的修改顺序不影响结果的情况下才有效。例如，分配不满足此条件。有关更多信息，请参阅关于延迟传播的部分。 （就是lazy标记啦）</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-Non-commutative-combiner-functions"><a href="#3-Non-commutative-combiner-functions" class="headerlink" title="3. Non-commutative combiner functions"></a>3. Non-commutative combiner functions</h3><ul>
+<li>我们可以很容易就把上面的代码改成最大堆 or 最小堆， 这也是为啥我拿线段树当堆用</li>
+</ul>
+<h3 id="4-延迟传播"><a href="#4-延迟传播" class="headerlink" title="4. 延迟传播"></a>4. 延迟传播</h3><ul>
+<li><p>和传统线段树类似，通过lazy标记来实现范围查询与范围修改</p>
+</li>
+<li><p>我们需要更多的变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int h = sizeof(int) * 8 - __builtin_clz(n);</span><br><span class="line">int d[N];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>h</em>是树的高度， <em>n中</em>的最高有效位。<code>d[i]</code>是一个延迟的操作，在必要时可以传播到节点 <em>i</em>的子级（这在示例中应该更加清楚）。数组大小仅<code>N</code>是因为我们不必为叶子存储此信息-它们没有任何子对象。这导致我们总共使用 3 *  <em>n</em>内存。 </p>
+</li>
+<li><p><strong>区间修改，区间最大值</strong></p>
+<ul>
+<li>这可能是最简单的情况。下面的代码远不是通用的，也不是最有效的，但这是一个很好的起点。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">void apply(int p, int val)&#123;</span><br><span class="line">    t[p] += val;</span><br><span class="line">    if(p &lt; n) d[p] += val;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void build(int p) &#123;</span><br><span class="line">    while(p &gt; 1) p &gt;&gt;= 1, t[p] = max(t[p &lt;&lt; 1], t[p &lt;&lt; 1 | 1]) + d[p];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void push(int p) &#123;</span><br><span class="line">    for(int s = h; s &gt; 0; --s) &#123;</span><br><span class="line">        int i = p &gt;&gt; s;</span><br><span class="line">        if(d[i] != 0) &#123;</span><br><span class="line">            apply(i&lt;&lt;1  , d[i]);</span><br><span class="line">            apply(i&lt;&lt;1|1, d[i]);</span><br><span class="line">            d[i] = 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void inc(int l, int r, int val) &#123;</span><br><span class="line">    l += n, r += n;</span><br><span class="line">    int l0 = l, r0 = r;</span><br><span class="line">    for(; l &lt; r; l &gt;&gt;= 1, r &gt;&gt;= 1) &#123;</span><br><span class="line">        if(l&amp;1) apply(l++, val);</span><br><span class="line">        if(r&amp;1) apply(--r, val);</span><br><span class="line">    &#125;</span><br><span class="line">    build(l0);build(r0 - 1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int query(int l, int r) &#123;</span><br><span class="line">    l += n, r += n;</span><br><span class="line">    push(l);push(r - 1);</span><br><span class="line">    int res = -2e9;</span><br><span class="line">    for(; l &lt; r; l &gt;&gt;= 1, r &gt;&gt;= 1) &#123;</span><br><span class="line">        if(l&amp;1) res = max(res, t[l++]);</span><br><span class="line">        if(r&amp;1) res = max(res, t[--r]);</span><br><span class="line">    &#125;</span><br><span class="line">    return res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/LJH%E7%BA%BF%E6%AE%B5%E6%A0%91/" rel="tag"># LJH线段树</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2020/02/16/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" rel="next" title="优先队列">
+                  <i class="fa fa-chevron-left"></i> 优先队列
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80ODM5OS8yNDg5Mw=="></div>
+  </div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-单元素修改的线段树"><span class="nav-number">1.</span> <span class="nav-text">1.单元素修改的线段树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Non-commutative-combiner-functions"><span class="nav-number">2.</span> <span class="nav-text">3. Non-commutative combiner functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-延迟传播"><span class="nav-number">3.</span> <span class="nav-text">4. 延迟传播</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="Mreak"
+    src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Mreak</p>
+  <div class="site-description" itemprop="description">算法虐我千百遍，我待算法如初恋。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mreak233" title="GitHub &amp;rarr; https:&#x2F;&#x2F;github.com&#x2F;mreak233" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/2189413790@qq.com" title="E-Mail &amp;rarr; 2189413790@qq.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">©2019 by Mreak</span>
+</div>
+  <div class="powered-by">
+  <i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+    本站访客数:<span id="busuanzi_value_site_uv"></span>
+  </span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.4.2
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.2"></script><script src="/js/motion.js?v=7.4.2"></script>
+<script src="/js/schemes/muse.js?v=7.4.2"></script>
+<script src="/js/next-boot.js?v=7.4.2"></script>
+
+
+
+  
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.2"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+</body>
+</html>

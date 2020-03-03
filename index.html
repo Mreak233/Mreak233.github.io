@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.0.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.2">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.2">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/header.png?v=7.4.2">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/header.png?v=7.4.2">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/header.png?v=7.4.2">
   <link rel="mask-icon" href="/images/logo.svg?v=7.4.2" color="#222">
 
 <link rel="stylesheet" href="/css/main.css?v=7.4.2">
@@ -150,17 +150,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">4</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">10</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">3</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">5</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">8</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">14</span></a>
 
   </li>
         <li class="menu-item menu-item-schedule">
@@ -219,6 +219,601 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/17/LJH%E7%BA%BF%E6%AE%B5%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Mreak">
+      <meta itemprop="description" content="算法虐我千百遍，我待算法如初恋。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mreak 's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/17/LJH%E7%BA%BF%E6%AE%B5%E6%A0%91/" class="post-title-link" itemprop="url">LJH线段树</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-16 21:27:09" itemprop="dateCreated datePublished" datetime="2020-02-16T21:27:09Z">2020-02-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-03 02:21:42" itemprop="dateModified" datetime="2020-03-03T02:21:42Z">2020-03-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%AF%E4%BB%A3%E7%A0%81%E5%97%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">是代码嗷</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a href="http://codeforces.com/blog/entry/18051" target="_blank" rel="noopener">参考（白嫖）文献</a></p>
+<p>原作者是英文的来着，我是高中时候写最短路的时候看见的qaq，当时自己改了一下，拿来当堆用，跑了<a href="https://www.luogu.com.cn/problem/P3371" target="_blank" rel="noopener">luogu最短路板子</a>的rank1qaq。说明这个还是很顶的。</p>
+<!--readmore-->
+
+<hr>
+<h3 id="1-单元素修改的线段树"><a href="#1-单元素修改的线段树" class="headerlink" title="1.单元素修改的线段树"></a>1.单元素修改的线段树</h3><ul>
+<li><p>我们这里考虑两种操作</p>
+<ul>
+<li><ol>
+<li>修改数组中的一个元素</li>
+<li>求某个区间的元素总和</li>
+</ol>
+</li>
+<li><p>这里我们先假设数组的元素个数为2的幂，这里以16为例，最下面一行（叶子节点）是我们的数组<br><img src="/2020/02/17/LJH%E7%BA%BF%E6%AE%B5%E6%A0%91/1.png" alt="n = 16 时的树"></p>
+<ul>
+<li><p>修改操作的话就直接修改然后向上维护就行<br>求和操作：<br>   举个栗子，我们需要求<strong>[3,11)</strong>的和，只需要对19、5、12、26节点求和即可</p>
+</li>
+<li><pre><code>#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+const int N = 1e6 + 5;
+
+int n, t[N &lt;&lt; 1];
+
+//build the tree
+void build() {
+   for(int i = n - 1;i &gt; 0; --i) t[i] = t[i&lt;&lt;1] + t[i&lt;&lt;1|1];
+}
+
+//set val at position p
+void modify(int p,int val) {
+   for(t[p += n] = val; p &gt; 1; p &gt;&gt;= 1) t[p&gt;&gt;1] = t[p] + t[p^1];
+}
+
+//sum on interval [l, r)
+int query(int l,int r) {
+   int res = 0;
+   for(l += n, r += n; l &lt; r;l &gt;&gt;= 1, r &gt;&gt;= 1) {
+       if(l&amp;1) res += t[l++];
+       if(r&amp;1) res += t[--r];
+   }
+   return res;
+}
+
+int main(){
+   scanf(&quot;%d&quot;,&amp;n);
+   for(int i = 0; i &lt; n; ++i) scanf(&quot;%d&quot;, t + n + i);
+   build();modify(0,1);
+   printf(&quot;%d\n&quot;,query(3,11));
+   return 0;
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line">   - 十分优美。</span><br><span class="line">  </span><br><span class="line">   - 接下来解释一下这样做为什么有效而且高效~</span><br><span class="line">  </span><br><span class="line">      - 从图片中您可以注意到，叶子存储在以*n*开头的连续节点中，索引为*i的*元素对应于索引为*i* +  *n*的节点。因此，我们可以将初始值直接读入它们所属的树中。</span><br><span class="line">     - 在执行任何查询之前，我们需要构建树，这很简单，并且需要*O*（*n*）时间。由于父级的索引始终小于子级，因此我们仅按降序处理所有内部节点。如果您对位操作感到困惑，则build（）的代码等效于`t[i] = t[2*i] + t[2*i+1]`。</span><br><span class="line">     - 修改元素也非常简单，并且花费的时间与树的高度成正比，即*O*（*log*（*n*））。我们只需要更新给定节点的父节点中的值即可。因此，我们知道了节点*p的*父节点为*p* / 2或`p&gt;&gt;1`，便向上走树，这意味着相同。`p^1`将2 *  *i*变成2 *  *i* + 1，反之亦然，因此它表示*p*的父级的第二个子级。</span><br><span class="line">     - 求和也可以在*O*（*log*（*n*））时间内进行。为了更好地理解它的逻辑，您可以遍历区间[ 3、11]的示例，并验证结果是否完全由节点19、26、12和5中的值组成（按此顺序）。</span><br><span class="line">  </span><br><span class="line">  - 总体思路如下。如果*l*（左间隔边界）是奇数（等于`l&amp;1`），则*l*是其父级的右子级。然后我们的间隔包括节点*l，*但不包括它的父节点。因此，我们通过设置*l* =（*l* + 1）/ 2来添加`t[l]`并移动到*l*的父母的右边。如果*l*是偶数，则它是左孩子，并且该间隔也包括它的父对象（除非右边界干扰了），所以我们通过设置*l* =  *l* / 2来移至它。类似的论点也适用于右边界。边界遇见后我们便停止。</span><br><span class="line">  </span><br><span class="line">    无需递归，也无需进行其他计算（例如找到间隔的中间部分），我们只需遍历所需的所有节点，因此非常高效。</span><br><span class="line"></span><br><span class="line">- 前面我们的讨论完全基于任意大小的数组，但是事实上这个代码适用于任意大小的数组，解释会复杂的多，但是我们先来看看它带给我们的好处</span><br><span class="line">  - 1. 线段树只使用了2 * n 内存，而不是像传统线段树一样使用4 * n；</span><br><span class="line">    2. 数组元素从 索引n 开始连续存储</span><br><span class="line">    3. 所有操作都十分高效而且容易编写</span><br><span class="line">  -  您可以跳过下一部分，仅测试代码以检查其是否正确。但是对于那些对某种解释感兴趣的人，这是*n* = 13的树的样子 </span><br><span class="line">   ![n = 13 时的树](LJH线段树/2.png)</span><br><span class="line">  -  它实际上不再是一棵树，而是一组完美的二叉树：具有根2和高度4，根7和高度2，根12和高度2，根13和高度1。用于**查询**操作，因此存储在其中的内容无关紧要。叶子似乎出现在不同的高度，但是可以通过在节点13之前切割树并将树的右部分向左移动来固定叶子。我相信，就我们执行的操作而言，所产生的结构对于较大的完美二叉树的一部分可以证明是同构的，这就是为什么我们获得正确结果的原因。 </span><br><span class="line">  -  在这里，我们不进行证明，让我们来看一下间隔为[0，7）的示例。我们有*l* = 13，  *r* = 20，`l&amp;1 =&gt; add t[13]`边界变为*l* = 7，  *r* = 10。同样`l&amp;1 =&gt; add t[7]`，边界变为*l* = 4，  *r* = 5，并且突然节点处于相同的高度。现在`r&amp;1 =&gt; add t[4 = --r]`，边界变为*l* = 2，  *r* = 2，到此结束。 </span><br><span class="line"></span><br><span class="line">### 2.区间修改，单元素访问</span><br><span class="line"></span><br><span class="line">- 这里我们考虑两种操作</span><br><span class="line"></span><br><span class="line">  - 1. 向某区间中的所有元素添加一个值</span><br><span class="line">    2. 求某个位置的元素值</span><br><span class="line"></span><br><span class="line">  - 在这种情况下，我们需要修改`Modify`和`query`函数</span><br></pre></td></tr></table></figure>
+void modify(int l, int r, int value) {
+ for (l += n, r += n; l &lt; r; l &gt;&gt;= 1, r &gt;&gt;= 1) {
+   if (l&amp;1) t[l++] += value;
+   if (r&amp;1) t[--r] += value;
+ }
+}
+
+int query(int p) {
+ int res = 0;
+ for (p += n; p &gt; 0; p &gt;&gt;= 1) res += t[p];
+ return res;
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-   很像是之前的`query`函数与`Modify`函数互换了qaq，这里等于打了tag</span><br><span class="line">   </span><br><span class="line">-  如果在修改后的某个时刻需要检查数组中的所有元素，则可以使用以下代码将所有修改推到叶子上。之后，我们可以遍历以索引*n*开头的元素。这样，我们将复杂度从*O*（*nlog*（*n*））降低到*O*（*n*），类似于使用*build*而不是进行n次修改。</span><br><span class="line"></span><br><span class="line">   ``` </span><br><span class="line">   void push() &#123;</span><br><span class="line">     for (int i = 1; i &lt; n; ++i) &#123;</span><br><span class="line">       t[i&lt;&lt;1] += t[i];</span><br><span class="line">       t[i&lt;&lt;1|1] += t[i];</span><br><span class="line">       t[i] = 0;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></code></pre></li>
+</ul>
+</li>
+<li><p>但是请注意，以上代码仅在单个元素的修改顺序不影响结果的情况下才有效。例如，分配不满足此条件。有关更多信息，请参阅关于延迟传播的部分。 （就是lazy标记啦）</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-Non-commutative-combiner-functions"><a href="#3-Non-commutative-combiner-functions" class="headerlink" title="3. Non-commutative combiner functions"></a>3. Non-commutative combiner functions</h3><ul>
+<li>我们可以很容易就把上面的代码改成最大堆 or 最小堆， 这也是为啥我拿线段树当堆用</li>
+</ul>
+<h3 id="4-延迟传播"><a href="#4-延迟传播" class="headerlink" title="4. 延迟传播"></a>4. 延迟传播</h3><ul>
+<li><p>和传统线段树类似，通过lazy标记来实现范围查询与范围修改</p>
+</li>
+<li><p>我们需要更多的变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int h = sizeof(int) * 8 - __builtin_clz(n);</span><br><span class="line">int d[N];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>h</em>是树的高度， <em>n中</em>的最高有效位。<code>d[i]</code>是一个延迟的操作，在必要时可以传播到节点 <em>i</em>的子级（这在示例中应该更加清楚）。数组大小仅<code>N</code>是因为我们不必为叶子存储此信息-它们没有任何子对象。这导致我们总共使用 3 *  <em>n</em>内存。 </p>
+</li>
+<li><p><strong>区间修改，区间最大值</strong></p>
+<ul>
+<li>这可能是最简单的情况。下面的代码远不是通用的，也不是最有效的，但这是一个很好的起点。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">void apply(int p, int val)&#123;</span><br><span class="line">    t[p] += val;</span><br><span class="line">    if(p &lt; n) d[p] += val;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void build(int p) &#123;</span><br><span class="line">    while(p &gt; 1) p &gt;&gt;= 1, t[p] = max(t[p &lt;&lt; 1], t[p &lt;&lt; 1 | 1]) + d[p];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void push(int p) &#123;</span><br><span class="line">    for(int s = h; s &gt; 0; --s) &#123;</span><br><span class="line">        int i = p &gt;&gt; s;</span><br><span class="line">        if(d[i] != 0) &#123;</span><br><span class="line">            apply(i&lt;&lt;1  , d[i]);</span><br><span class="line">            apply(i&lt;&lt;1|1, d[i]);</span><br><span class="line">            d[i] = 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void inc(int l, int r, int val) &#123;</span><br><span class="line">    l += n, r += n;</span><br><span class="line">    int l0 = l, r0 = r;</span><br><span class="line">    for(; l &lt; r; l &gt;&gt;= 1, r &gt;&gt;= 1) &#123;</span><br><span class="line">        if(l&amp;1) apply(l++, val);</span><br><span class="line">        if(r&amp;1) apply(--r, val);</span><br><span class="line">    &#125;</span><br><span class="line">    build(l0);build(r0 - 1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int query(int l, int r) &#123;</span><br><span class="line">    l += n, r += n;</span><br><span class="line">    push(l);push(r - 1);</span><br><span class="line">    int res = -2e9;</span><br><span class="line">    for(; l &lt; r; l &gt;&gt;= 1, r &gt;&gt;= 1) &#123;</span><br><span class="line">        if(l&amp;1) res = max(res, t[l++]);</span><br><span class="line">        if(r&amp;1) res = max(res, t[--r]);</span><br><span class="line">    &#125;</span><br><span class="line">    return res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/16/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Mreak">
+      <meta itemprop="description" content="算法虐我千百遍，我待算法如初恋。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mreak 's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/16/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" class="post-title-link" itemprop="url">优先队列</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-02-16 14:20:45 / 修改时间：11:20:41" itemprop="dateCreated datePublished" datetime="2020-02-16T14:20:45Z">2020-02-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%AF%E4%BB%A3%E7%A0%81%E5%97%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">是代码嗷</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>qaq，我优先队列经常记不住，自己又懒得写堆，每次要用都得baidu一下，害。今天索性就好好复习一下。</p>
+<!--readmore-->
+
+<hr>
+<h4 id="1-基本类型"><a href="#1-基本类型" class="headerlink" title="1. 基本类型"></a>1. 基本类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//升序队列，即小顶堆</span><br><span class="line">priority_queue&lt;int,vector&lt;int&gt;,greater&lt;int&gt; &gt; q;</span><br><span class="line">//降序队列，即大顶堆</span><br><span class="line">priority_queue&lt;int,vector&lt;int&gt;,less&lt;int&gt; &gt; q;</span><br><span class="line">//     这里一定要有空格，不然就变成右移运算符了↑</span><br><span class="line"></span><br><span class="line">//对于基础类型，还有一种写法，默认大顶堆</span><br><span class="line">priority_queue&lt;int&gt; q;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-使用Pair"><a href="#2-使用Pair" class="headerlink" title="2.使用Pair"></a>2.使用Pair</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//pair的比较，先比较第一个后比较第二个</span><br><span class="line">//(2,5) &gt; (1,3) &gt; (1,2)</span><br><span class="line">priority_queue&lt;pair&lt;int,int&gt; &gt; q;</span><br></pre></td></tr></table></figure>
+
+<p>为了直观，我贴个代码好了qaq。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;queue&gt;</span><br><span class="line">#include&lt;cstdio&gt;</span><br><span class="line">#include&lt;cstring&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">const int N = 1e6 + 5;</span><br><span class="line"></span><br><span class="line">typedef pair&lt;int,int&gt; pii;</span><br><span class="line"></span><br><span class="line">priority_queue&lt;pii, vector&lt;pii&gt;, greater&lt;pii&gt; &gt; q;</span><br><span class="line"></span><br><span class="line">int n, x, y;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    scanf(&quot;%d&quot;,&amp;n);</span><br><span class="line">    for(int i = 1;i &lt;= n;++i) scanf(&quot;%d%d&quot;,&amp;x,&amp;y),q.push(make_pair(x,y));</span><br><span class="line">    while(!q.empty())&#123;</span><br><span class="line">        printf(&quot;(%d,%d) &quot;,q.top().first,q.top().second);q.pop();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输入输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">5</span><br><span class="line">1 2</span><br><span class="line">1 3</span><br><span class="line">2 5</span><br><span class="line">2 4</span><br><span class="line">5 6</span><br><span class="line">(1,2) (1,3) (2,4) (2,5) (5,6)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-自定义类型"><a href="#3-自定义类型" class="headerlink" title="3. 自定义类型"></a>3. 自定义类型</h3><p>自定义类型只要定义了比较运算或者重载了小于号就可以了~</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;queue&gt;</span><br><span class="line">#include&lt;cstdio&gt;</span><br><span class="line">#include&lt;cstring&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">const int N = 1e6 + 5;</span><br><span class="line"></span><br><span class="line">//在结构体内重载运算符 &lt;</span><br><span class="line">// 大顶堆</span><br><span class="line">struct edge&#123;</span><br><span class="line">    int u, v, w;</span><br><span class="line"></span><br><span class="line">    bool operator&lt;(const edge&amp; a) const&#123;</span><br><span class="line">        return w &lt; a.w;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">//在结构体外重写仿函数</span><br><span class="line">// 大顶堆</span><br><span class="line">struct cmp&#123;</span><br><span class="line">    bool operator() (edge a, edge b)&#123;</span><br><span class="line">        return a.w &lt; b.w;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">//结构体内重载运算符</span><br><span class="line">priority_queue&lt;edge&gt; q;</span><br><span class="line"></span><br><span class="line">//结构体外重写仿函数</span><br><span class="line">priority_queue&lt;edge, vector&lt;edge&gt;, cmp&gt; q;</span><br><span class="line"></span><br><span class="line">int n, x, y, z;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    scanf(&quot;%d&quot;,&amp;n);</span><br><span class="line">    for(int i = 1;i &lt;= n;++i) scanf(&quot;%d%d%d&quot;,&amp;x,&amp;y,&amp;z),q.push(edge&#123;x,y,z&#125;);</span><br><span class="line">    while(!q.empty())&#123;</span><br><span class="line">        printf(&quot;(%d,%d,%d)\n&quot;,q.top().u,q.top().v,q.top().w);q.pop();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输入输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">6</span><br><span class="line">1 2 3</span><br><span class="line">2 3 4</span><br><span class="line">4 5 6</span><br><span class="line">7 8 9</span><br><span class="line">2 3 1</span><br><span class="line">2 3 4</span><br><span class="line">(7,8,9)</span><br><span class="line">(4,5,6)</span><br><span class="line">(2,3,4)</span><br><span class="line">(2,3,4)</span><br><span class="line">(1,2,3)</span><br><span class="line">(2,3,1)</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/16/%E5%90%88%E5%B9%B6%E6%9E%9C%E5%AD%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Mreak">
+      <meta itemprop="description" content="算法虐我千百遍，我待算法如初恋。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mreak 's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/16/%E5%90%88%E5%B9%B6%E6%9E%9C%E5%AD%90/" class="post-title-link" itemprop="url">合并果子</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-02-16 13:29:12 / 修改时间：13:26:32" itemprop="dateCreated datePublished" datetime="2020-02-16T13:29:12Z">2020-02-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%AF%E4%BB%A3%E7%A0%81%E5%97%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">是代码嗷</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>是在补<strong>合并果子</strong>来着，但是也是回顾一下很多差不多（<del>去掉</del>）忘记的知识点~ </p>
+<p>的确是这样。qaq。</p>
+<p>题目是luogu的P1090嗷</p>
+<!--readmore-->
+
+<hr>
+<h4 id="1-原题"><a href="#1-原题" class="headerlink" title="1. 原题"></a>1. 原题</h4><div class="note info">
+            <h3 id="luogu-P1090-合并果子"><a href="#luogu-P1090-合并果子" class="headerlink" title="luogu P1090 - 合并果子"></a><a href="https://www.luogu.com.cn/problem/P1090" target="_blank" rel="noopener">luogu P1090 - 合并果子</a></h3>
+          </div>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;queue&gt;</span><br><span class="line">#include&lt;cstdio&gt;</span><br><span class="line">#include&lt;cstring&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">const int N = 1e4 + 5;</span><br><span class="line"></span><br><span class="line">priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt; &gt; q;// 小顶堆</span><br><span class="line"></span><br><span class="line">int n, x, ans;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    scanf(&quot;%d&quot;,&amp;n);</span><br><span class="line">    for(int i = 1;i &lt;= n;++i) scanf(&quot;%d&quot;,&amp;x),q.push(x);</span><br><span class="line">    while(q.size() != 1)&#123;</span><br><span class="line">        x = q.top();q.pop();x += q.top();q.pop();</span><br><span class="line">        ans += x;q.push(x);</span><br><span class="line">    &#125;</span><br><span class="line">    printf(&quot;%d\n&quot;, ans);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过合并果子，复习了一哈优先队列~</p>
+<p>觉得好像没做啥，那就复习一下堆好了~</p>
+<hr>
+<p>我回来了，网上找了一圈，没有很优美的代码qaq，而且都说没有必要手打堆（除非是P选手？抑或是情怀党</p>
+<p>为了效率，完全可以用pb_ds库里面各种奇奇怪怪的堆（逃，记得之前为了luogu P 3371 的效率花式用各种数据结构，结果还是zkw线段树最快，qaq，现在是ljh堆最快，逃</p>
+<p>想到了自己的线段树，我或许可以复习一下线段树qaq</p>
+<hr>
+<p>2.16 鸽于此，本来还想写一下用合并果子的O(N)实现来着（钻了数据范围的空子)，下次一定。咕咕咕~</p>
+<h3 id><a href="#" class="headerlink" title></a></h3>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/11/Git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Mreak">
+      <meta itemprop="description" content="算法虐我千百遍，我待算法如初恋。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mreak 's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/11/Git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Git学习笔记</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-11 14:52:49" itemprop="dateCreated datePublished" datetime="2020-02-11T14:52:49Z">2020-02-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-12 03:08:53" itemprop="dateModified" datetime="2020-02-12T03:08:53Z">2020-02-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%AF%E5%AD%A6%E4%B9%A0%E5%97%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">是学习嗷</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>觉得之前做的事情算是没有必要的，毕竟我不是在写教程，我只是想做一下笔记，以防之后自己忘记了</p>
+<p>再说教程<a href="https://www.liaoxuefeng.com/wiki/896043488029600/898732792973664" target="_blank" rel="noopener">廖雪峰</a>写的很好了哈，所以我只想稍微对命令做一点总结。QAQ</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/11/Git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/11/%E8%AE%B0%E4%B8%80%E4%BB%B6%E5%88%A0%E9%99%A4%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F%E5%B0%8F%E7%AE%AD%E5%A4%B4%E5%BC%95%E5%8F%91%E7%9A%84%E6%83%A8%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Mreak">
+      <meta itemprop="description" content="算法虐我千百遍，我待算法如初恋。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mreak 's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/11/%E8%AE%B0%E4%B8%80%E4%BB%B6%E5%88%A0%E9%99%A4%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F%E5%B0%8F%E7%AE%AD%E5%A4%B4%E5%BC%95%E5%8F%91%E7%9A%84%E6%83%A8%E6%A1%88/" class="post-title-link" itemprop="url">记一件删除快捷方式小箭头引发的惨案</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-11 13:46:14" itemprop="dateCreated datePublished" datetime="2020-02-11T13:46:14Z">2020-02-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-16 11:55:42" itemprop="dateModified" datetime="2020-02-16T11:55:42Z">2020-02-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%AF%E7%94%9F%E6%B4%BB%E5%97%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">是生活嗷</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>不知道你们怎么看，反正我是觉得快捷方式左下角的小箭头十分不美观（强迫症患者实锤</p>
+<!--readmore-->
+
+<hr>
+<p>然后，昨天就动手删除了，果不其然，任务栏上固定的文件资源管理器又失效了TAT（为什么说又，因为之前删过一次，也失效了，但是不知道为啥小箭头又出现了qaq</p>
+<p>在尝试过网上各种乱七八糟的方法后，我的注册表也变得乱七八糟qaq，但是丝毫没有效果，还是这个亚子</p>
+<p><img src="/2020/02/11/%E8%AE%B0%E4%B8%80%E4%BB%B6%E5%88%A0%E9%99%A4%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F%E5%B0%8F%E7%AE%AD%E5%A4%B4%E5%BC%95%E5%8F%91%E7%9A%84%E6%83%A8%E6%A1%88/1.png" alt></p>
+<p>于是我 更换了搜索引擎，换成<strong>必应</strong>之后第一次尝试好像就好了。。真棒嗷</p>
+<p>看的是<a href="https://zhidao.baidu.com/question/1052783200548895179.html" target="_blank" rel="noopener">百度知道的第一个回答</a>。</p>
+<p>就是把下面的代码加进注册表就好</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00</span><br><span class="line"></span><br><span class="line">[HKEY_CLASSES_ROOT\Folder\shell\explore\command]</span><br><span class="line">&quot;DelegateExecute&quot;=&quot;&#123;11dbb47c-a525-400b-9e80-a54615a090c0&#125;&quot;</span><br><span class="line"></span><br><span class="line">[HKEY_CLASSES_ROOT\Folder\shell\opennewprocess\command]</span><br><span class="line">&quot;DelegateExecute&quot;=&quot;&#123;11dbb47c-a525-400b-9e80-a54615a090c0&#125;&quot;</span><br><span class="line"></span><br><span class="line">[HKEY_CLASSES_ROOT\Folder\shell\opennewwindow\command]</span><br><span class="line">&quot;DelegateExecute&quot;=&quot;&#123;11dbb47c-a525-400b-9e80-a54615a090c0&#125;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>Orz，差不多就这样了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/10/hexo-%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E7%9A%84%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Mreak">
+      <meta itemprop="description" content="算法虐我千百遍，我待算法如初恋。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mreak 's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/10/hexo-%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E7%9A%84%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">hexo 插入图片的问题</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-02-09 17:25:19 / 修改时间：09:37:58" itemprop="dateCreated datePublished" datetime="2020-02-09T17:25:19Z">2020-02-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index">
+                    <span itemprop="name">博客搭建</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p> 因为之前的年终总结也有插入图片，但是好像并不能显示出来嗷~</p>
+<p>然后就上网查了一下解决方法。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/10/hexo-%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E7%9A%84%E9%97%AE%E9%A2%98/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/08/test/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -242,10 +837,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-02-08 10:23:13 / 修改时间：07:07:09" itemprop="dateCreated datePublished" datetime="2020-02-08T10:23:13Z">2020-02-08</time>
+              <time title="创建时间：2020-02-08 10:23:13" itemprop="dateCreated datePublished" datetime="2020-02-08T10:23:13Z">2020-02-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-16 06:20:01" itemprop="dateModified" datetime="2020-02-16T06:20:01Z">2020-02-16</time>
+              </span>
 
           
 
@@ -390,10 +991,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-02-08 07:29:09 / 修改时间：07:39:20" itemprop="dateCreated datePublished" datetime="2020-02-08T07:29:09Z">2020-02-08</time>
+              <time title="创建时间：2020-02-08 07:29:09" itemprop="dateCreated datePublished" datetime="2020-02-08T07:29:09Z">2020-02-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-09 08:30:16" itemprop="dateModified" datetime="2020-02-09T08:30:16Z">2020-02-09</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -468,73 +1075,15 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-01-29 14:20:16 / 修改时间：06:20:16" itemprop="dateCreated datePublished" datetime="2020-01-29T14:20:16Z">2020-01-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/28/blog%E6%90%AD%E5%BB%BA%E5%B0%8F%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Mreak">
-      <meta itemprop="description" content="算法虐我千百遍，我待算法如初恋。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mreak 's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/28/blog%E6%90%AD%E5%BB%BA%E5%B0%8F%E8%AE%B0/" class="post-title-link" itemprop="url">blog搭建小记</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-27 18:57:07" itemprop="dateCreated datePublished" datetime="2020-01-27T18:57:07Z">2020-01-27</time>
+              <time title="创建时间：2020-01-29 14:20:16" itemprop="dateCreated datePublished" datetime="2020-01-29T14:20:16Z">2020-01-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-08 07:17:59" itemprop="dateModified" datetime="2020-02-08T07:17:59Z">2020-02-08</time>
+                <time title="修改时间：2020-02-09 07:52:29" itemprop="dateModified" datetime="2020-02-09T07:52:29Z">2020-02-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -542,8 +1091,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index">
-                    <span itemprop="name">博客搭建</span>
+                  <a href="/categories/%E6%98%AF%E9%98%85%E8%AF%BB%E5%97%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">是阅读嗷</span>
                   </a>
                 </span>
             </span>
@@ -559,241 +1108,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>很早很早很早就有搭自己的blog的想法，也是为了满足自己的倾诉欲，也是做一点知识输出（这方面忽视即可，<del>我基本没有知识</del></p>
+          <blockquote class="blockquote-center"><p>摘自《死人经》（冰临神下著）相关一  武松</p>
+</blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/01/28/blog%E6%90%AD%E5%BB%BA%E5%B0%8F%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2020/01/29/%E6%AD%A6%E6%9D%BE/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
         
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/26/Git%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Mreak">
-      <meta itemprop="description" content="算法虐我千百遍，我待算法如初恋。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mreak 's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/26/Git%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">Git学习小记-1</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-26 13:02:20" itemprop="dateCreated datePublished" datetime="2020-01-26T13:02:20Z">2020-01-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-08 07:18:18" itemprop="dateModified" datetime="2020-02-08T07:18:18Z">2020-02-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%98%AF%E5%AD%A6%E4%B9%A0%E5%97%B7/" itemprop="url" rel="index">
-                    <span itemprop="name">是学习嗷</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>其实好早就对Git感兴趣了，但是一直没有找到时间去学（其实是懒，QAQ</p>
-<p>然后最近不是新冠闹得沸沸扬扬嘛，刚好春节期间也不用走亲戚串门啥的，总算是可以好好坐下来学点东西了。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/26/Git%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/01/%E5%A4%A9%E6%B0%94%E4%B9%8B%E5%AD%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Mreak">
-      <meta itemprop="description" content="算法虐我千百遍，我待算法如初恋。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mreak 's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/11/01/%E5%A4%A9%E6%B0%94%E4%B9%8B%E5%AD%90/" class="post-title-link" itemprop="url">天气之子</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-11-01 13:38:42" itemprop="dateCreated datePublished" datetime="2019-11-01T13:38:42Z">2019-11-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-08 07:18:46" itemprop="dateModified" datetime="2020-02-08T07:18:46Z">2020-02-08</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>结束了。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/11/01/%E5%A4%A9%E6%B0%94%E4%B9%8B%E5%AD%90/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/22/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Mreak">
-      <meta itemprop="description" content="算法虐我千百遍，我待算法如初恋。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mreak 's blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/10/22/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-10-22 08:48:47" itemprop="dateCreated datePublished" datetime="2019-10-22T08:48:47Z">2019-10-22</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
       
     </div>
 
@@ -811,6 +1135,9 @@
   </div>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -855,20 +1182,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
